@@ -1,13 +1,16 @@
 #pragma once
 
-// STL modules
-#include <iostream>
+// FreeRTOS modules
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 namespace kc {
 
 namespace Utility
 {
-    void SayHello();
+    /// @brief Stop execution for some time
+    /// @param seconds Amout of seconds to delay for
+    void Sleep(double seconds);
 }
 
 } // namespace kc
