@@ -13,7 +13,7 @@ I2C::Master::Master(i2c_port_t port, int sclPin, int sdaPin)
     config.sda_pullup_en = GPIO_PULLUP_ENABLE;
     config.master.clk_speed = 400000;
     i2c_param_config(m_port, &config);
-    i2c_driver_install(m_port, I2C_MODE_MASTER, 0, 0, 0);
+    ESP_ERROR_CHECK(i2c_driver_install(m_port, I2C_MODE_MASTER, 0, 0, 0));
 }
 
 I2C::Master::~Master()
