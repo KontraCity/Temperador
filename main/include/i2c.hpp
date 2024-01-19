@@ -34,6 +34,32 @@ namespace I2C
         /// @param length Length of data to receive
         /// @return Received data
         std::vector<uint8_t> receive(uint8_t address, int length);
+
+        /// @brief Receive value from I2C bus
+        /// @tparam Value Type of value to receive
+        /// @param address Address of device to receive from
+        /// @param firstRegister First value register
+        /// @param reverse Whether or not to receive bytes in reverse order
+        /// @param lengthLimit Value length limit
+        /// @return Received value
+        template <typename Value>
+        inline Value receiveValue(uint8_t address, uint8_t firstRegister, bool reverse = false, int lengthLimit = -1)
+        {
+            send(address, { firstRegister });
+            std::vector<uint8_t> response = receive(address, (lengthLimit == -1 ? sizeof(Value) : lengthLimit));
+
+            Value value = 0;
+            if (reverse)
+            {
+                for (int index = 0, offset = 0; index < response.size(); ++index, offset += 8)
+                    value |= response[index] << offset;
+                return value;
+            }
+
+            for (int index = response.size() - 1, offset = 0; index >= 0; --index, offset += 8)
+                value |= response[index] << offset;
+            return value;
+        }
     };
 }
 
