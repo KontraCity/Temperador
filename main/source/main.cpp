@@ -56,7 +56,7 @@ std::string MeasurementToJson(const Sensors::Measurement& measurement)
     std::string string(256, '\0');
     int stringLength = sprintf(
         string.data(),
-        R"({"aht20":{"temperature":%0.1f,"humidity":%0.1f},"bmp280":{"temperature":%0.1f,"pressure":%0.1f}})",
+        R"({"aht20":{"temperature":"%0.1f","humidity":"%0.1f"},"bmp280":{"temperature":"%0.1f","pressure":"%0.1f"}})",
         measurement.aht20.temperature,
         measurement.aht20.humidity,
         measurement.bmp280.temperature,
@@ -77,7 +77,8 @@ bool IsAutoRequest(httpd_req_t* request)
 esp_err_t ExternalResourceHandler(httpd_req_t* request)
 {
     std::string jsonString = MeasurementToJson(Sensors::Measure(Const::ExternalPort));
-    httpd_resp_send(request, jsonString.c_str(), HTTPD_RESP_USE_STRLEN);
+    httpd_resp_set_type(request, "application/json");
+    httpd_resp_sendstr(request, jsonString.c_str());
     Led::Instance->glow(IsAutoRequest(request) ? Led::Color{ 0, 255 } : Led::Color{ 255, 0 }, 5, 0.3, true);
     return ESP_OK;
 }
@@ -85,7 +86,8 @@ esp_err_t ExternalResourceHandler(httpd_req_t* request)
 esp_err_t InternalResourceHandler(httpd_req_t* request)
 {
     std::string jsonString = MeasurementToJson(Sensors::Measure(Const::InternalPort));
-    httpd_resp_send(request, jsonString.c_str(), HTTPD_RESP_USE_STRLEN);
+    httpd_resp_set_type(request, "application/json");
+    httpd_resp_sendstr(request, jsonString.c_str());
     Led::Instance->glow(IsAutoRequest(request) ? Led::Color{ 0, 255 } : Led::Color{ 255, 0 }, 5, 0.3, true);
     return ESP_OK;
 }
