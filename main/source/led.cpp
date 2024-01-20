@@ -43,8 +43,8 @@ void Led::setDuty(ledc_channel_t channel, int duty)
 
 void Led::setColor(Color color)
 {
-    setDuty(Const::GreenChannel, 0b1111111111111 * (color.green / 255.0));
-    setDuty(Const::BlueChannel, 0b1111111111111 * (color.blue / 255.0));
+    setDuty(Const::GreenChannel, 0b1111111111111 * (color.green / 255.0) * (Const::MaxLedBrightness / 100.0));
+    setDuty(Const::BlueChannel, 0b1111111111111 * (color.blue / 255.0) * (Const::MaxLedBrightness / 100.0));
 }
 
 void Led::threadFunction(Settings settings)
@@ -97,8 +97,15 @@ Led::~Led()
     stopThread();
 }
 
-void Led::glow(Color color, double glowDuration, double transitionDuration)
+void Led::glow(Color color, double glowDuration, double transitionDuration, bool shouldntBlock)
 {
+    if (shouldntBlock)
+    {
+        std::lock_guard lock(m_mutex);
+        if (m_threadStatus == ThreadStatus::Running)
+            return;
+    }
+
     stopThread();
     m_thread = std::thread(&Led::threadFunction, this, Settings{ Settings::Type::Glow, color, transitionDuration, glowDuration });
 }

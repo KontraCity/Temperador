@@ -1,6 +1,7 @@
 #pragma once
 
 // STL modules
+#include <iostream>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -90,7 +91,8 @@ public:
     /// @param color Color to glow
     /// @param glowDuration LED glow duration in seconds
     /// @param transitionDuration Duration of state transition in seconds
-    void glow(Color color, double glowDuration, double transitionDuration = 0.3);
+    /// @param shouldntBlock Whether or not should return as fast as possible
+    void glow(Color color, double glowDuration, double transitionDuration = 0.3, bool shouldntBlock = false);
 
     /// @brief Make LED blink
     /// @param color Color to blink

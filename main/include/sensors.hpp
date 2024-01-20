@@ -12,12 +12,22 @@ namespace kc {
 
 namespace Sensors
 {
+    struct Aht20Measurement
+    {
+        double temperature = 0.0;   // Temperature in celsius degrees
+        double humidity = 0.0;      // Relative humidity in percents
+    };
+
+    struct Bmp280Measurement
+    {
+        double temperature = 0.0;   // Temperature in celsius degrees
+        double pressure = 0.0;      // Air pressure in hectopascales
+    };
+
     struct Measurement
     {
-        double aht20Temperature = 0.0;      // Temperature measured by AHT20 in celsius degrees
-        double aht20Humidity = 0.0;         // Relative humidity in percents
-        double bmp280Temperature = 0.0;     // Temperature measured by BMP280 in celsius degrees
-        double bmp280Pressure = 0.0;        // Air pressure in hectopascales
+        Aht20Measurement aht20;
+        Bmp280Measurement bmp280;
     };
 
     /// @brief Peform sensors measurement

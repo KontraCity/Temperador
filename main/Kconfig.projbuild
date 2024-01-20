@@ -1,0 +1,12 @@
+menu "WiFi network Configuration"
+    config WIFI_NETWORK_SSID
+        string "WiFi network SSID"
+        default "ssid"
+        help
+            Name of WiFi network that ESP32 will connect to.
+    config WIFI_NETWORK_PASSWORD
+        string "WiFi network password"
+        default "password"
+        help
+            Password of WiFi network that ESP32 will connect to.
+endmenu

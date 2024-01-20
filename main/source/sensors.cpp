@@ -2,16 +2,10 @@
 
 namespace kc {
 
-struct Aht20Measurement
-{
-    double temperature = 0.0;   // Temperature in celsius degrees
-    double humidity = 0.0;      // Relative humidity in percents
-};
-
 /// @brief Perform AHT20 sensor measurement
 /// @param master I2C master that the sensor is attached to
 /// @return Sensor measurement
-static Aht20Measurement MeasureAht20(I2C::Master& master)
+static Sensors::Aht20Measurement MeasureAht20(I2C::Master& master)
 {
     master.send(0x38, { 0xAC, 0x33, 0x00 });
     Utility::Sleep(0.08);
@@ -23,16 +17,10 @@ static Aht20Measurement MeasureAht20(I2C::Master& master)
     };
 }
 
-struct Bmp280Measurement
-{
-    double temperature = 0.0;   // Temperature in celsius degrees
-    double pressure = 0.0;      // Air pressure in hectopascales
-};
-
 /// @brief Perform BMP280 sensor measurement
 /// @param master I2C master that the sensor is attached to
 /// @return Sensor measurement
-static Bmp280Measurement MeasureBmp280(I2C::Master& master)
+static Sensors::Bmp280Measurement MeasureBmp280(I2C::Master& master)
 {
     master.send(0x77, { 0xF4, 0b111'010'01 });
     Utility::Sleep(0.05);
@@ -93,9 +81,7 @@ Sensors::Measurement Sensors::Measure(i2c_port_t port)
     }
 
     I2C::Master& master = (port == Const::ExternalPort ? externalMaster : internalMaster);
-    Aht20Measurement aht20Measurement = MeasureAht20(master);
-    Bmp280Measurement bmp280Measurement = MeasureBmp280(master);
-    return { aht20Measurement.temperature, aht20Measurement.humidity, bmp280Measurement.temperature, bmp280Measurement.pressure };
+    return { MeasureAht20(master), MeasureBmp280(master) };
 }
 
 } // namespace kc

@@ -15,6 +15,7 @@ namespace Const
     constexpr i2c_port_t InternalPort = I2C_NUM_1;
     constexpr int InternalSCLPin = 33;
     constexpr int InternalSDAPin = 32;
+    constexpr double MaxLedBrightness = 5.0;
 
     constexpr ledc_channel_t GreenChannel = LEDC_CHANNEL_0;
     constexpr int GreenLedPin = 12;
