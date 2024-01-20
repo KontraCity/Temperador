@@ -2,22 +2,15 @@
 #include <iostream>
 
 // Custom modules
-#include "sensors.hpp"
+#include "led.hpp"
+#include "utility.hpp"
 using namespace kc;
 
 extern "C" void app_main(void)
 {
-    Sensors::Measurement measurement = Sensors::Measure(Const::ExternalPort);
-    std::cout << "EXTERNAL:\n";
-    std::cout << "\tAHT20  TEMP:  " << measurement.aht20Temperature << " 'C  \n";
-    std::cout << "\tAHT20  HUMID: " << measurement.aht20Humidity << " %  \n";
-    std::cout << "\tBMP280 TEMP:  " << measurement.bmp280Temperature << " 'C  \n";
-    std::cout << "\tBMP280 PRESS: " << measurement.bmp280Pressure << " hPa  \n";
+    Led::Instance->blink({ 0, 255 }, 0.5);
+    Utility::Sleep(5);
 
-    measurement = Sensors::Measure(Const::InternalPort);
-    std::cout << "INTERNAL:\n";
-    std::cout << "\tAHT20  TEMP:  " << measurement.aht20Temperature << " 'C  \n";
-    std::cout << "\tAHT20  HUMID: " << measurement.aht20Humidity << " %  \n";
-    std::cout << "\tBMP280 TEMP:  " << measurement.bmp280Temperature << " 'C  \n";
-    std::cout << "\tBMP280 PRESS: " << measurement.bmp280Pressure << " hPa  \n";
+    std::cout << "Stopping!\n";
+    Led::Instance->glow({ 255, 0 }, 2);
 }
