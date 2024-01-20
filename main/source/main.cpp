@@ -56,7 +56,7 @@ std::string MeasurementToJson(const Sensors::Measurement& measurement)
     std::string string(256, '\0');
     int stringLength = sprintf(
         string.data(),
-        R"({"aht20":{"temperature":"%0.1f","humidity":"%0.1f"},"bmp280":{"temperature":"%0.1f","pressure":"%0.1f"}})",
+        R"({"aht20":{"temperature":%0.1f,"humidity":%0.1f},"bmp280":{"temperature":%0.1f,"pressure":%0.1f}})",
         measurement.aht20.temperature,
         measurement.aht20.humidity,
         measurement.bmp280.temperature,
