@@ -4,7 +4,6 @@
 #include <cmath>
 
 // Custom modules
-#include "const.hpp"
 #include "i2c.hpp"
 #include "utility.hpp"
 
@@ -12,6 +11,9 @@ namespace kc {
 
 namespace Sensors
 {
+    constexpr i2c_port_t ExternalPort = I2C_NUM_0;
+    constexpr i2c_port_t InternalPort = I2C_NUM_1;
+
     struct Aht20Measurement
     {
         double temperature = 0.0;   // Temperature in celsius degrees
@@ -31,7 +33,7 @@ namespace Sensors
     };
 
     /// @brief Peform sensors measurement
-    /// @param port Sensors port (where to measure)
+    /// @param port I2C port in which to perform measurement
     /// @return Sensors measurement
     Measurement Measure(i2c_port_t port);
 }

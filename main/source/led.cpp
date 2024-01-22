@@ -16,20 +16,20 @@ Led::Led()
 
     ledc_channel_config_t greenChannelConfig = {};
     greenChannelConfig.speed_mode = LEDC_LOW_SPEED_MODE;
-    greenChannelConfig.channel = Const::GreenChannel;
+    greenChannelConfig.channel = GreenChannel;
     greenChannelConfig.timer_sel = LEDC_TIMER_0;
     greenChannelConfig.intr_type = LEDC_INTR_DISABLE;
-    greenChannelConfig.gpio_num = Const::GreenLedPin;
+    greenChannelConfig.gpio_num = CONFIG_STATUS_LED_GREEN_CHANNEL_PIN;
     greenChannelConfig.duty = 0;
     greenChannelConfig.hpoint = 0;
     ESP_ERROR_CHECK(ledc_channel_config(&greenChannelConfig));
 
     ledc_channel_config_t blueChannelConfig = {};
     blueChannelConfig.speed_mode = LEDC_LOW_SPEED_MODE;
-    blueChannelConfig.channel = Const::BlueChannel;
+    blueChannelConfig.channel = BlueChannel;
     blueChannelConfig.timer_sel = LEDC_TIMER_0;
     blueChannelConfig.intr_type = LEDC_INTR_DISABLE;
-    blueChannelConfig.gpio_num = Const::BlueLedPin;
+    blueChannelConfig.gpio_num = CONFIG_STATUS_LED_BLUE_CHANNEL_PIN;
     blueChannelConfig.duty = 0;
     blueChannelConfig.hpoint = 0;
     ESP_ERROR_CHECK(ledc_channel_config(&blueChannelConfig));
@@ -43,8 +43,8 @@ void Led::setDuty(ledc_channel_t channel, int duty)
 
 void Led::setColor(Color color)
 {
-    setDuty(Const::GreenChannel, 0b1111111111111 * (color.green / 255.0) * (Const::MaxLedBrightness / 100.0));
-    setDuty(Const::BlueChannel, 0b1111111111111 * (color.blue / 255.0) * (Const::MaxLedBrightness / 100.0));
+    setDuty(GreenChannel, 0b1111111111111 * (color.green / 255.0));
+    setDuty(BlueChannel, 0b1111111111111 * (color.blue / 255.0));
 }
 
 void Led::threadFunction(Settings settings)

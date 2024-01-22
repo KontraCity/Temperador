@@ -62,8 +62,8 @@ static Sensors::Bmp280Measurement MeasureBmp280(I2C::Master& master)
 
 Sensors::Measurement Sensors::Measure(i2c_port_t port)
 {
-    static I2C::Master externalMaster(Const::ExternalPort, Const::ExternalSCLPin, Const::ExternalSDAPin);
-    static I2C::Master internalMaster(Const::InternalPort, Const::InternalSCLPin, Const::InternalSDAPin);
+    static I2C::Master externalMaster(ExternalPort, CONFIG_I2C_EXTERNAL_PORT_SCL_PIN, CONFIG_I2C_EXTERNAL_PORT_SDA_PIN);
+    static I2C::Master internalMaster(InternalPort, CONFIG_I2C_INTERNAL_PORT_SCL_PIN, CONFIG_I2C_INTERNAL_PORT_SDA_PIN);
     static bool initialized = false;
     if (!initialized)
     {
@@ -80,7 +80,7 @@ Sensors::Measurement Sensors::Measure(i2c_port_t port)
         initialized = true;
     }
 
-    I2C::Master& master = (port == Const::ExternalPort ? externalMaster : internalMaster);
+    I2C::Master& master = (port == ExternalPort ? externalMaster : internalMaster);
     return { MeasureAht20(master), MeasureBmp280(master) };
 }
 

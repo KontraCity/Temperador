@@ -1,5 +1,4 @@
 // STL modules
-#include <iostream>
 #include <string>
 
 // ESP modules
@@ -76,7 +75,7 @@ bool IsAutoRequest(httpd_req_t* request)
 
 esp_err_t ExternalResourceHandler(httpd_req_t* request)
 {
-    std::string jsonString = MeasurementToJson(Sensors::Measure(Const::ExternalPort));
+    std::string jsonString = MeasurementToJson(Sensors::Measure(Sensors::ExternalPort));
     httpd_resp_set_type(request, "application/json");
     httpd_resp_sendstr(request, jsonString.c_str());
     Led::Instance->glow(IsAutoRequest(request) ? Led::Color{ 0, 255 } : Led::Color{ 255, 0 }, 5, 0.3, true);
@@ -85,7 +84,7 @@ esp_err_t ExternalResourceHandler(httpd_req_t* request)
 
 esp_err_t InternalResourceHandler(httpd_req_t* request)
 {
-    std::string jsonString = MeasurementToJson(Sensors::Measure(Const::InternalPort));
+    std::string jsonString = MeasurementToJson(Sensors::Measure(Sensors::InternalPort));
     httpd_resp_set_type(request, "application/json");
     httpd_resp_sendstr(request, jsonString.c_str());
     Led::Instance->glow(IsAutoRequest(request) ? Led::Color{ 0, 255 } : Led::Color{ 255, 0 }, 5, 0.3, true);

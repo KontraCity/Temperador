@@ -10,13 +10,16 @@
 #include <driver/ledc.h>
 
 // Custom modules
-#include "const.hpp"
 #include "utility.hpp"
 
 namespace kc {
 
 class Led
 {
+private:
+    static constexpr ledc_channel_t GreenChannel = LEDC_CHANNEL_0;
+    static constexpr ledc_channel_t BlueChannel = LEDC_CHANNEL_1;
+
 public:
     struct Color
     {
