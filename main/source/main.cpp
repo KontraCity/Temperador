@@ -73,6 +73,12 @@ bool IsAutoRequest(httpd_req_t* request)
     return (query.find("type=auto") != std::string::npos);
 }
 
+esp_err_t ErrorHandler(httpd_req_t* request, httpd_err_code_t error)
+{
+    httpd_resp_send_err(request, HTTPD_404_NOT_FOUND, "Not found. Available resources: /external, /internal");
+    return ESP_OK;
+}
+
 esp_err_t ExternalResourceHandler(httpd_req_t* request)
 {
     std::string jsonString = MeasurementToJson(Sensors::Measure(Sensors::ExternalPort));
@@ -96,6 +102,7 @@ void ServerInit()
     httpd_handle_t server = NULL;
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     ESP_ERROR_CHECK(httpd_start(&server, &config));
+    httpd_register_err_handler(server, HTTPD_404_NOT_FOUND, &ErrorHandler);
 
     httpd_uri_t externalResource = {};
     externalResource.uri = "/external";
