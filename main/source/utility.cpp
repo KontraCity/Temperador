@@ -19,7 +19,8 @@ void Utility::Sleep(double seconds)
 double Utility::Round(double value, int decimalPlaces)
 {
     double multiplier = std::pow(10, decimalPlaces);
-    return std::round(value * multiplier) / multiplier;
+    double result = std::round(value * multiplier) / multiplier;
+    return (result == -0 ? 0 : result); // -0 doesn't make sense
 }
 
 } // namespace kc

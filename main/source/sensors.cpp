@@ -12,8 +12,8 @@ static Sensors::Aht20Measurement MeasureAht20(I2C::Master& master)
 
     std::vector<uint8_t> response = master.receive(0x38, 7);
     return {
-        Utility::Round((((response[3] & 0b0000'1111) << 16) | (response[4] << 8) | response[5]) / std::pow(2, 20) * 200 - 50, 1),
-        Utility::Round(((response[1] << 12) | (response[2] << 4) | ((response[3] & 0b1111'0000) >> 4)) / std::pow(2, 20) * 100, 1)
+        Utility::Round((((response[3] & 0b0000'1111) << 16) | (response[4] << 8) | response[5]) / std::pow(2, 20) * 200 - 50, 2),
+        Utility::Round(((response[1] << 12) | (response[2] << 4) | ((response[3] & 0b1111'0000) >> 4)) / std::pow(2, 20) * 100, 2)
     };
 }
 
@@ -57,7 +57,7 @@ static Sensors::Bmp280Measurement MeasureBmp280(I2C::Master& master)
     var2 = pressure * calibrationValue8 / 32768.0;
     pressure = pressure + (var1 + var2 + calibrationValue7) / 16.0;
 
-    return { Utility::Round(fineTemperature / 5120.0, 1), Utility::Round(pressure / 100.0, 1) };
+    return { Utility::Round(fineTemperature / 5120.0, 2), Utility::Round(pressure / 100.0, 2) };
 }
 
 Sensors::Measurement Sensors::Measure(i2c_port_t port)
